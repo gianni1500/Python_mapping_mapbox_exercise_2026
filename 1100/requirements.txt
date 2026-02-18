@@ -1,0 +1,27 @@
+# =============================================================================
+# REQUIREMENTS FILE — Section 1100: Best Tacos in Fort Worth
+# =============================================================================
+# This file tells Python which libraries your scripts need to run.
+#
+# HOW TO USE THIS FILE IN VS CODE:
+#   1. Open a terminal in VS Code (Terminal → New Terminal)
+#   2. Make sure you are in the '1100' folder:
+#         cd 1100
+#   3. Run this command to install all required libraries:
+#         pip install -r requirements.txt
+#   4. Wait for all packages to download and install.
+#   5. You are ready to run the exercise scripts!
+#
+# WHAT EACH LIBRARY DOES:
+#   requests       — downloads webpages (like a browser, but in Python)
+#   beautifulsoup4 — parses HTML so we can find and extract data from it
+#   lxml           — a fast HTML/XML parser that BeautifulSoup can use
+#   pandas         — organizes data into rows and columns (like Excel)
+#   folium         — creates interactive web maps saved as HTML files
+# =============================================================================
+
+requests
+beautifulsoup4
+lxml
+pandas
+folium
