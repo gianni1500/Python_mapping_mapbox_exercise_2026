@@ -1,0 +1,128 @@
+DCDA Capstone Course
+Lab 6: Custom Basemap Design & Interactive Hometown Map
+Overview
+This lab combines interactive web mapping with custom cartographic design. You will create a personalized, art-inspired basemap using Mapbox Studio, build a dataset of meaningful locations from your hometown, and integrate both into an interactive web map using Python. This assignment emphasizes both creative design and technical implementation, bridging the gap between cartographic aesthetics and modern web mapping technology.
+Lab Objectives
+• Design a custom interactive basemap in Mapbox Studio inspired by a meaningful cultural artifact (art, film, TV show, etc.)
+• Apply principles of map generalization to create a basemap that functions well at multiple scales
+• Create a structured dataset of personally significant hometown locations
+• Use Python to geocode addresses, symbolize locations by category, and create interactive pop-ups
+• Integrate your custom Mapbox basemap into a Python-generated interactive map using the Mapbox API
+Overall Lab Requirements
+This lab has three main components: (1) a custom Mapbox basemap, (2) a CSV dataset of hometown locations, and (3) a Python-generated interactive map. All components must be completed and submitted together.
+
+
+PART 1: Custom Mapbox Basemap Design
+Step 1: Create a Mapbox Account
+1. Navigate to https://studio.mapbox.com and create an account using your TCU email address
+2. Once logged in, you'll see the Mapbox Studio dashboard where you can create and manage map styles
+Step 2: Choose Your Design Inspiration
+Select a piece of art, media, or design that will inspire your basemap's color palette and aesthetic. This could be:
+• A favorite painting or art movement (e.g., Van Gogh's Starry Night, Art Deco posters)
+• A TV show or film (e.g., The Office, Wes Anderson movies, Studio Ghibli)
+• Album artwork, book covers, or graphic design
+• Architecture, fashion, or nature photography
+Important: Save or bookmark reference images of your inspiration source. You'll need to include these in your reflection.
+Step 3: Create a New Style in Mapbox Studio
+3. From your Mapbox Studio dashboard, click the "New style" button
+4. Select the "Blank" template to start with a completely empty canvas (do not use any pre-made templates)
+5. The Mapbox Studio style editor will open with a blank map canvas ready for customization
+Step 4: Add and Style Components
+Mapbox Studio uses "components" - groups of related layers that can be styled together. You'll add components one by one and customize them to match your design inspiration.
+Required Components (must include all):
+• Land, water, & sky: This creates the base layer. Customize colors for land, water, and sky to match your inspiration. Consider whether to show land use details or keep it simple.
+• Road network: Add roads and customize their colors and widths. You can toggle on/off road labels, shields (highway markers), and exits. Style different road types (motorways, primary roads, streets) differently based on importance.
+• Place labels: Add labels for countries, states, cities, and neighborhoods. Customize the font, size, and when labels appear at different zoom levels. You can show labels as text only or text with icon markers.
+• POI (Points of Interest) labels: Add labels for parks, landmarks, and other points of interest. Customize which types of POIs to display and their styling.
+• Terrain component: Add terrain visualization (hillshade, contours, or 3D terrain). Use layer ordering and transparency to ensure terrain is visible but not overwhelming.
+Technical Requirements:
+• Minimum of 12 individually styled layers/components (the required components above should get you most of the way there, but you may need to add additional components or custom layers)
+• Do not use default settings - every component/layer must be customized to fit your design
+• Style data across zoom levels: Use "Style across zoom range" to ensure your map looks good at local (high zoom), regional (medium zoom), and world (low zoom) scales. For example, make labels larger as users zoom in, or hide certain features at small scales.
+Design Tips:
+• Use color pickers to extract colors directly from your inspiration source
+• Consider uploading custom fonts that match your inspiration (use .ttf or .otf files from Google Fonts)
+• Test your map at different zoom levels and locations to ensure it works globally
+• Look at other Mapbox examples and online interactive maps (Google Maps, etc.) for ideas about what should appear at different scales
+Step 5: Publish Your Style and Get the Style URL
+6. Click the "Publish" button in the top right to save and publish your style
+7. Click "Share" to access your style's sharing options
+8. Set the style to "Public" so it can be accessed via the API
+9. Copy your style URL - it will look like: mapbox://styles/yourusername/yourstyleid
+Important: Save this style URL - you'll need it for Part 3 when creating your interactive map.
+
+
+PART 2: Create Hometown Locations Dataset
+Step 1: Choose Your Locations
+Select at least 10 locations from your hometown that are personally meaningful to you. These should be places you would show a friend visiting your hometown for the first time.
+Example location types (choose at least 3 different types):
+• Restaurants & Cafes (especially local, non-chain establishments)
+• Parks & Recreation Areas
+• Schools & Educational Institutions
+• Cultural Sites (museums, theaters, libraries)
+• Places of Worship
+• Historical Landmarks
+• Shopping Districts or Local Businesses
+PRIVACY NOTE: Do NOT include your actual home address or any other private/sensitive locations. Think of this as a public-facing map.
+Step 2: Create Your CSV File
+Create a CSV file named hometown_locations.csv with the following columns:
+Column NameData TypeDescriptionNameTextThe name of the location (e.g., "Reata Restaurant", "Fort Worth Botanic Garden")AddressTextFull street address (e.g., "310 Houston St, Fort Worth, TX 76102")TypeTextCategory of location (e.g., "Restaurant", "Park", "School", "Cultural", "Historical", "Recreation")DescriptionTextWhy this place is meaningful to you and worth visiting (2-3 sentences in your own words)Image_URLText (URL)URL of an image of the location (find on Google Images, the location's website, etc.)
+Example CSV structure:
+Name,Address,Type,Description,Image_URL "Joe T Garcia's","2201 N Commerce St, Fort Worth, TX 76106",Restaurant,"Family-owned Mexican restaurant that's been a Fort Worth institution since 1935. The outdoor patio is perfect for warm evenings and the atmosphere can't be beat.",https://example.com/joetgarcias.jpg
+
+
+PART 3: Create Interactive Map with Python
+In this section, you'll use Python in VS Code to geocode your locations, create an interactive map with your custom Mapbox basemap, add symbolized markers, and create pop-ups with images and descriptions.
+Step 1: Get Your Mapbox Access Token
+10. In Mapbox Studio, click on your account in the top right and select "Access tokens"
+11. Copy your default public token (it starts with "pk.")
+12. You'll use this token to access both the Mapbox Geocoding API and to display your custom style
+Step 2: Set Up Your Python Environment
+Open VS Code and create a new Python file (e.g., hometown_map.py). Install the required libraries:
+pip install folium pandas requests
+Step 3: Write Your Python Code
+You are encouraged to use AI coding tools (like GitHub Copilot, Claude, ChatGPT, etc.) to help generate your code. However, you should aspire understand what the code does and be able to explain it.
+Your Python script must accomplish the following:
+• Read your CSV file containing hometown locations
+• Geocode addresses using the Mapbox Geocoding API to convert addresses to latitude/longitude coordinates
+• Create a Folium map with your custom Mapbox basemap using the tile URL from your Mapbox style
+• Add markers with different symbols/colors based on location type (restaurants vs parks vs cultural sites, etc.)
+• Create interactive pop-ups that display: (1) Location name, (2) Your personal description, (3) An image of the location
+• Save the map as an HTML file
+Key Code Components (use these as a starting point):
+1. Mapbox Tile URL Format:
+tiles = 'https://api.mapbox.com/styles/v1/YOUR_USERNAME/YOUR_STYLE_ID/tiles/256/{z}/{x}/{y}@2x?access_token=YOUR_ACCESS_TOKEN'
+2. Mapbox Geocoding API Format:
+geocode_url = f'https://api.mapbox.com/search/geocode/v6/forward?q={address}&access_token={access_token}'
+3. Folium Icon Colors (use different colors for different location types):
+Available colors: red, blue, green, purple, orange, darkred, lightred, beige, darkblue, darkgreen, cadetblue, darkpurple, white, pink, lightblue, lightgreen, gray, black, lightgray
+Testing Your Code:
+• Test with 2-3 locations first before running on all 10+
+• Verify that geocoding is returning correct coordinates by checking a few in Google Maps
+• Ensure your custom basemap is loading correctly (you should see your design, not a default map)
+• Test that pop-ups display properly with images and your descriptions
+
+
+Deliverables & Submission
+Submit to D2L Assignment Folder:
+13. Your published Mapbox style URL (in a .txt file or included in your reflection document)
+14. Your hometown_locations.csv file
+15. Your Python script (.py file)
+16. Your final interactive map (as .html file)
+17. Your written reflection (as PDF) - see requirements below
+Add to Your Portfolio Website:
+• Add your interactive map (.html file) to your portfolio website under the "Lab 6" section
+• Add your written reflection to the same Lab 6 page (you can embed it as text or link to the PDF)
+Written Reflection (250-500 words)
+Your reflection must address the following:
+18. Design Inspiration: Explain what inspired your basemap design. Include reference images from your inspiration source and describe how you translated its visual elements (colors, mood, style) into your map design.
+19. Cartographic Challenges: What were the main challenges you faced when designing your basemap for multiple scales? How did you decide what features to show at different zoom levels?
+20. Technical Challenges: What coding challenges did you encounter when creating your interactive map? How did you use AI tools (if applicable) to help overcome them?
+Helpful Resources
+• Mapbox Studio Manual: https://docs.mapbox.com/studio-manual/
+• Mapbox Geocoding API: https://docs.mapbox.com/api/search/geocoding/
+• Folium Documentation: https://python-visualization.github.io/folium/
+• Google Fonts (for custom fonts): https://fonts.google.com/
+• Mapbox Gallery (for inspiration): https://www.mapbox.com/gallery
+
+Good luck, and have fun creating your custom map! This is an opportunity to combine technical skills with creative expression.
