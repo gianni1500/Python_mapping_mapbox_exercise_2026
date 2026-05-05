@@ -35,7 +35,7 @@ import os
 
 # --- A) Your Mapbox Public Access Token ---
 # Starts with "pk." — found at: https://account.mapbox.com/access-tokens/
-MAPBOX_TOKEN = "PASTE_YOUR_MAPBOX_TOKEN_HERE"
+MAPBOX_TOKEN = "pk.eyJ1IjoiZ2lhbm5pODAwIiwiYSI6ImNtbHRvZGloZDAyZXAzZG9yeDU4NWhuZHYifQ.zgTV_NQ7QPVeommiLkqGaw"
 
 # --- B) Your Mapbox Style URL ---
 # HOW TO GET IT:
@@ -43,10 +43,10 @@ MAPBOX_TOKEN = "PASTE_YOUR_MAPBOX_TOKEN_HERE"
 #   2. Click your custom style
 #   3. Click "Share" button → set style to "Public"
 #   4. Copy the URL that looks like: mapbox://styles/yourusername/yourstyleid
-MAPBOX_STYLE_URL = "mapbox://styles/YOUR_USERNAME/YOUR_STYLE_ID"
+MAPBOX_STYLE_URL = "mapbox://styles/gianni800/cmmclvong00cg01ry1haohbaw"
 
 # --- Validation ---
-if MAPBOX_TOKEN == "PASTE_YOUR_MAPBOX_TOKEN_HERE":
+if MAPBOX_TOKEN == "YOUR_MAPBOX_TOKEN_HERE":
     print("ERROR: Add your Mapbox access token to the MAPBOX_TOKEN variable.")
     exit()
 

@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Napa Valley AVA Wineries</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+
+<script>
+    // Initialize map centered on Napa Valley
+    var map = L.map('map').setView([38.5025, -122.2654], 11);
+
+    // Use OpenStreetMap tiles (NO token required)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+
+    // Napa Valley wineries data
+    var wineries = [
+        {name: "Chateau de Vie", coords: [38.59401, -122.61283], address: "3250 Highway 128", phone: "707-942-6446"},
+        {name: "Cobblestone", coords: [38.396632, -122.20444], address: "Napa, California", phone: "310.478.5540"},
+        {name: "Arns Winery", coords: [38.53483, -122.45843], address: "601 Mund Road", phone: "707-963-3429"},
+        {name: "Buehler Vineyards", coords: [38.51252, -122.38066], address: "820 Greenfield Rd.", phone: "707-963-2155"},
+        {name: "Altamura Winery", coords: [38.364393, -122.175126], address: "1700 Wooden Valley Rd", phone: "707-253-2000"},
+        {name: "Trefethen Vineyards", coords: [38.360475, -122.332444], address: "1160 Oak Knoll Ave.", phone: "707.255.7700"},
+        {name: "Nichelini Winery", coords: [38.498887, -122.293679], address: "2950 Sage Canyon Rd.", phone: "707-963-0717"},
+        {name: "Chappellet Winery", coords: [38.480085, -122.332246], address: "1581 Sage Canyon Rd, St Helena, CA 94574", phone: "707-286-4219"},
+        {name: "Hagafen Cellars", coords: [38.364798, -122.289431], address: "4160 Silverado Trail", phone: "707-252-0781"},
+        {name: "Lobo Wines", coords: [38.402253, -122.301956], address: "2275 Soda Canyon Road", phone: "707-224-8322"},
+        {name: "Pope Valley Winery", coords: [38.63401, -122.45156], address: "6613 Pope Valley Rd.", phone: "707-965-1246"},
+        {name: "Herencia Wines", coords: [38.37845, -122.1997], address: "4060 Monticello Rd", phone: "707-253-8463"},
+        {name: "Frisson Wine", coords: [38.271638, -122.428282], address: "Napa, California 95476", phone: "707-224-1222"},
+        {name: "HdV Wines", coords: [38.32605, -122.28335], address: "588 Trancas Street", phone: "707- 251-9121"},
+        {name: "Honrama Cellars", coords: [38.255489, -122.275441], address: "2515 Napa Valley Corporate Dr.", phone: "707-628-2743"},
+        {name: "Jamieson Ranch Vineyards", coords: [38.220365, -122.228789], address: "1 Kirkland Ranch Road", phone: "707-254-8673"},
+        {name: "Mira Napa Valley Education Center and Tasting Room", coords: [38.387327, -122.348463], address: "6170 Washington St.", phone: "707- 945-0881"},
+        {name: "Rahn Estate", coords: [38.55256, -122.45706], address: "1575 Deer Park Rd", phone: "707-965-3700"},
+        {name: "Bounty Hunter", coords: [38.299257, -122.285074], address: "975 First Street", phone: "707-226-3976"},
+        {name: "Brian Edward Wines", coords: [38.301004, -122.351783], address: "Napa, California 94558", phone: "707-927-3459"},
+        {name: "Charthia Cellars", coords: [38.327775, -122.297089], address: "23 Walkabout Lane", phone: "707-980-8026"},
+        {name: "Steltzner Vineyards", coords: [38.32347, -122.28931], address: "5 Financial Plaza, Ste 104", phone: "707-252-7272"},
+        {name: "Blackbird Vineyards", coords: [38.361837, -122.313912], address: "1330 Oak Knoll Ave", phone: "707-252-4444"},
+        {name: "Fortunati Vineyards", coords: [38.34756, -122.30834], address: "986 Salvador Avenue", phone: "707-255-9300"},
+        {name: "Moone-Tsai Vineyards", coords: [38.345036, -122.283833], address: "2921 Silverado Trail", phone: "707-265-6782"},
+        {name: "Silenus", coords: [38.363738, -122.339142], address: "5225 Solano Avenue", phone: "707-299-3930"},
+        {name: "Burly Wines – McCrorie Family Vineyards", coords: [38.333785, -122.326686], address: "4446 Stillson Street", phone: "707-299-7085"},
+        {name: "Spelletich Cellars", coords: [38.253755, -122.276035], address: "2545 Napa Valley Corporate Drive Suite C", phone: "707-775-7300"},
+        {name: "Spiriterra Vineyards", coords: [38.514496, -122.389893], address: "805 Greenfield Rd", phone: "415-218-1753"},
+        {name: "B. Kosuge Wines", coords: [38.281642, -122.288922], address: "Napa, California 94581", phone: "707-738-8396"},
+        {name: "Black Stallion Winery", coords: [38.359421, -122.291508], address: "4089 Silverado Trail", phone: "707- 227-3250"},
+        {name: "Campesino Vineyards", coords: [38.322027, -122.290248], address: "3205 Von Uhlit Ranch Rd", phone: "707-812-8974"},
+        {name: "Picnic Wine Company", coords: [38.29402, -122.23055], address: "5200 Wild Horse Valley Road", phone: "707-363-3893"},
+        {name: "Voss Vineyards", coords: [38.334989, -122.319742], address: "1862 El Centro Ave.", phone: "707-259-0993"},
+        {name: "Seavey Vineyard", coords: [38.5081, -122.40027], address: "1310 Conn Valley Rd.", phone: "707-963-8339"},
+        {name: "Somerston", coords: [38.51936, -122.26739], address: "3450 Sage Canyon Road", phone: "707-967-8414"},
+        {name: "Vermeil Wines", coords: [38.299221, -122.285861], address: "1018 First St.", phone: "707-254-9881"},
+        {name: "Andretti Winery", coords: [38.355739, -122.305293], address: "4162 Big Ranch Rd.", phone: "707-259-6777"},
+        {name: "David Arthur Vineyards", coords: [38.46776, -122.34869], address: "210 Long Ranch Road", phone: "707-963-5190"},
+        {name: "Lewis Cellars", coords: [38.351991, -122.308465], address: "4101 Big Ranch Rd", phone: "707-255-3400"},
+        {name: "Patland Estate Vineyards", coords: [38.402253, -122.301956], address: "2275 Soda Canyon Rd", phone: "888-539-4717"},
+        {name: "Gustavo Wines", coords: [38.258703, -122.271753], address: "902 Enterprise Way, STE P", phone: "707-257-6796"},
+        {name: "Hall Winery", coords: [38.49714, -122.40149], address: "56 Auberge Rd", phone: "707-967-2626"},
+        {name: "Highflyer Wines", coords: [38.53425, -122.469482], address: "543 Mund Rd.", phone: "707-967-8414"},
+        {name: "Neiman Cellars", coords: [38.29193, -122.287165], address: "375 Randolph St.", phone: "707-322-7478"},
+        {name: "White Rock Vineyards", coords: [38.37749, -122.28908], address: "1115 Loma Vista Dr.", phone: "707-257-7922"},
+        {name: "Antica Napa Valley", coords: [38.43409, -122.28782], address: "3149 Soda Canyon Rd.", phone: "707-257-8700"},
+        {name: "Beaucanon Estate Winery", coords: [38.32853, -122.27264], address: "1006 Monticello Rd.", phone: "707-254-1460"},
+        {name: "Lateral Wines", coords: [38.323315, -122.30196], address: "1370 Trancas Street #420", phone: "408-230-0392"},
+        {name: "Page Wine Cellars", coords: [38.293882, -122.300248], address: "520 California Blvd. #18", phone: "707-255-4665"},
+        {name: "Reid Family Cellars", coords: [38.31371, -122.34831], address: "1020 Borrette Lane", phone: "707-252-3195"},
+        {name: "Vinoce / Twenty Rows", coords: [38.304562, -122.286951], address: "880 Vallejo St.", phone: "707-265-7750"},
+        {name: "Aonair Wines", coords: [38.352185, -122.253114], address: "523 Westgate Drive", phone: "707-738-8352"},
+        {name: "Blue Oak Vineyard", coords: [38.31279, -122.23429], address: "44 Blue Oak Lane", phone: "707-291-3671"},
+        {name: "Grayson Cellars", coords: [38.35879, -122.33645], address: "5135 Solano Avenue", phone: "707-812-4443"},
+        {name: "M.S. Torun Winery", coords: [38.47611, -122.16098], address: "5185 Wragg Canyon Road", phone: "650-773 – 4003"},
+        {name: "Pina Napa Valley", coords: [38.467067, -122.378046], address: "8060 Silverado Trail", phone: "707-738-9328"},
+        {name: "Topaz Wines", coords: [38.337395, -122.318953], address: "1755 Monarch Dr.", phone: "707-252-2468"},
+        {name: "Whetstone Wine Cellars", coords: [38.339816, -122.263461], address: "1075 Altas Peak Rd.", phone: "707-254-0600"},
+        {name: "AlphaWolf Vineyard & Olive Ranch / Eagle Eye Wines", coords: [38.34092, -122.12502], address: "6595 Gordon Valley Rd.", phone: "707-427-1600"},
+        {name: "Benevolo Wines – Closed", coords: [38.3696, -122.31995], address: "5171 Big Ranch Rd", phone: "707-484-1917"},
+        {name: "Bryant Family Vineyard", coords: [38.48467, -122.33916], address: "1567 Sage Canyon", phone: "707-963-0483"},
+        {name: "Buoncristiani Family Winery", coords: [38.402253, -122.301956], address: "2275 Soda Canyon Road", phone: "707-259-1681"},
+        {name: "Del Dotto Historic Winery & Caves", coords: [38.339637, -122.26309], address: "1055 Atlas Peak Road", phone: "707-963-2134"},
+        {name: "Emerson Brown Wines", coords: [38.338755, -122.31751], address: "4281 Dale Drive", phone: "707-363-0693"},
+        {name: "Gridley Family Cellars", coords: [38.363738, -122.339142], address: "5225 Solano Ave", phone: "707-965-9900"},
+        {name: "Heritance Wines", coords: [38.24962, -122.27152], address: "855 Bordeaux Way Ste 260", phone: "707-259-0476"},
+        {name: "Ideology Cellars", coords: [38.363738, -122.339142], address: "5225 Solano Ave", phone: "(707) 226-2151"},
+        {name: "Materra Wines – Cunat Family Vineyards", coords: [38.362429, -122.309303], address: "4326 Big Ranch Road", phone: "707-224-4900"},
+        {name: "Neyers Vineyards", coords: [38.48937, -122.32769], address: "2153 Sage Canyon Rd.", phone: "707-963-8840"},
+        {name: "ShadowBox Cellars", coords: [38.224624, -122.265736], address: "449 Gateway Road West", phone: "707-738-0386"},
+        {name: "AnanTaah", coords: [38.363738, -122.339142], address: "5225 Solano Ave.", phone: "707-337-4720"},
+        {name: "Falcor Wine Cellars", coords: [38.2559, -122.27629], address: "2511 Napa Valley Corporate Drive, Suite 115", phone: "707-255-6070"},
+        {name: "Gandona Winery", coords: [38.53425, -122.469482], address: "1535 Sage Canyon Road", phone: "707-967-5550"},
+        {name: "James Cole Winery", coords: [38.370676, -122.298905], address: "5014 Silverado Trail", phone: "707-251-9905"},
+        {name: "Matthiasson", coords: [38.363738, -122.339142], address: "5225 Solano Ave", phone: "707-265-9349"},
+        {name: "Nakamura Cellars", coords: [38.363738, -122.339142], address: "5225 Solano Ave", phone: "707-299-3930"},
+        {name: "Scalon Cellars", coords: [38.28207, -122.22771], address: "270 Kreuzer Ln", phone: "707-666-2245"},
+        {name: "St. Barthelemy Cellars", coords: [38.5263, -122.19161], address: "1001 Steele Canyon Rd.", phone: "707-966-1513"},
+        {name: "Calla Lily Estate & Winery", coords: [38.62499, -122.450995], address: "6307 Pope Valley Road", phone: "707-965-9558"},
+        {name: "Coup de Foudre Winery", coords: [38.229768, -122.25689], address: "135 Camino Dorado, Suite 8B", phone: "707-253-8300"},
+        {name: "Euclid Wines", coords: [38.327974, -122.335185], address: "4217 Grape Vine Dr.", phone: "707-681-9463"},
+        {name: "Hendry", coords: [38.321111, -122.343619], address: "3104 Redwood Rd.", phone: "707-226-8320"},
+        {name: "Mike & Molly Hendry", coords: [38.321111, -122.343619], address: "3104 Redwood Rd.", phone: "707-255-6754"},
+        {name: "Virgil's Vineyard", coords: [38.335836, -122.274044], address: "1607 McKinley Road", phone: "248-719-2808"},
+        {name: "Bremer Family Winery", coords: [38.551221, -122.470916], address: "975 Deer Park Rd.", phone: "707-963-5411"},
+        {name: "Burgess Cellars", coords: [38.5569, -122.47512], address: "1108 Deer Park Rd.", phone: "800-752-9463"},
+        {name: "Darioush Winery", coords: [38.367466, -122.294664], address: "4240 Silverado Trail", phone: "707-257-2345"},
+        {name: "Garnet Vineyards", coords: [38.301004, -122.351783], address: "Napa, California 94558", phone: "510-601-2223"},
+        {name: "Laird Family Tasting Room", coords: [38.35394, -122.33499], address: "5055 Solano Avenue", phone: "877-297-4902"},
+        {name: "Lapis Luna", coords: [38.336492, -122.323], address: "4225 Solano Ave.", phone: "707-332-5563"},
+        {name: "Modus Operandi Cellars", coords: [38.363738, -122.339142], address: "5225 Solano Ave", phone: "530-219-6199"},
+        {name: "Reynolds Family Winery", coords: [38.355987, -122.284871], address: "3266 Silverado Trail", phone: "707-258-2558"},
+        {name: "Trahan Winery", coords: [38.29747, -122.288401], address: "974 Franklin Street", phone: "707-257-7477"},
+        {name: "Viader Winery", coords: [38.56008, -122.47363], address: "1120 Deer Park Rd.", phone: "707-963-3816"},
+        {name: "Y Rousseau Wines", coords: [38.25805, -122.27189], address: "902 Enterprise Way, Suite O", phone: "415-713-4203"},
+        {name: "Alex Sotelo Cellars", coords: [38.326771, -122.333261], address: "4154 Burgandy Way", phone: "707-224-5920"},
+        {name: "Hidden Ridge Vineyard", coords: [38.229058, -122.255771], address: "110 Camino Oruga", phone: "707-339-0530"},
+        {name: "Laird Family Estate", coords: [38.35394, -122.33499], address: "5055 Solano Avenue", phone: "877-297-4902"},
+        {name: "Luna Vineyards", coords: [38.345036, -122.283833], address: "2921 Silverado Trail", phone: "707-255-5862"},
+        {name: "Mark Herold Wines", coords: [38.300957, -122.28229], address: "710 First Street", phone: "707-258-3111"},
+        {name: "Mi Sueno Winery", coords: [38.259791, -122.271996], address: "910 Enterprise Way, Suite M", phone: "707-258-6358"},
+        {name: "Noria Wines", coords: [38.363738, -122.339142], address: "5225 Solano Ave.", phone: ""},
+        {name: "P.B. Hein Vineyards", coords: [38.54594, -122.46748], address: "140 Pine Place", phone: "707-967-8638"},
+        {name: "Prim Family Vineyard", coords: [38.210325, -122.2574], address: "175 Tower Rd", phone: "855-289-8800"},
+        {name: "Salexis Wines", coords: [38.290695, -122.300692], address: "257 Walnut St. Suite D", phone: "707-256-3435"},
+        {name: "Sonoma-Loeb Wines", coords: [38.480085, -122.332246], address: "1581 Sage Canyon Rd.", phone: "800-989-2440"},
+        {name: "Anderson's Conn Valley Vineyards", coords: [38.51261, -122.41142], address: "680 Rossi Rd.", phone: "707-963-8600"},
+        {name: "Ca' Momi Wines", coords: [38.30693, -122.295024], address: "2180 Jefferson Street", phone: "877-622-6664"},
+        {name: "Celani Family Vineyards", coords: [38.33559, -122.29132], address: "2230 Big Ranch Road", phone: "707.255.5645"},
+        {name: "Crosby Roamann", coords: [38.26044, -122.27403], address: "45 Enterprise Court #6", phone: "707-258-8599"},
+        {name: "Darjean Jones", coords: [38.260395, -122.274163], address: "45 Enterprise Ct", phone: "707-266-6547"},
+        {name: "Hesperian Wines", coords: [38.321409, -122.289238], address: "778 Williams Court", phone: "707-927-3787"},
+        {name: "Merus", coords: [38.552446, -122.484134], address: "424 Crystal Springs Road", phone: "707-251-5551"},
+        {name: "RD Winery", coords: [38.224688, -122.256805], address: "3 Executive Way", phone: "707-259-9446"},
+        {name: "St. Clair Brown Winery", coords: [38.304776, -122.286602], address: "850 Vallejo Street", phone: "707-255-5591"},
+        {name: "Stonehedge Winery", coords: [38.301266, -122.2876], address: "1004 Clinton St.", phone: "707-257-1068"},
+        {name: "William Hill Estate", coords: [38.355604, -122.270099], address: "1761 Atlas Peak Rd.", phone: "707-265-3024"},
+        {name: "Alta Napa Valley", coords: [38.35394, -122.33499], address: "5055 Solano Avenue", phone: "707-341-2930"},
+        {name: "Amuse Bouche", coords: [38.229768, -122.25689], address: "135 Camino Dorado, Suite 8", phone: "707-251-9300"},
+        {name: "Boyanci / InSpire", coords: [38.229768, -122.25689], address: "135 Camino Dorado Suite 12", phone: "707-255-7800"},
+        {name: "Coniglio Wines", coords: [38.53425, -122.469482], address: "543 Mund Road", phone: "888-726-6796"},
+        {name: "Gamling & McDuck", coords: [38.53753, -122.47215], address: "615A Sunnyside Road", phone: "612-309-3306"},
+        {name: "Hailstone Vineyards", coords: [38.30101, -122.282222], address: "708 First Street", phone: "844-990-1900"},
+        {name: "Highlands Winery", coords: [38.363738, -122.339142], address: "5225 Solano Avenue", phone: "707-603-2096"},
+        {name: "Luna Vineyards Tasting Salon", coords: [38.345036, -122.283833], address: "2921 Silverado Trail", phone: "707-255-5862"},
+        {name: "O'Brien Estate", coords: [38.345852, -122.339788], address: "1200 Orchard Avenue", phone: "707-252-8463"},
+        {name: "Pine & Brown Estates", coords: [38.289995, -122.284548], address: "1045 Pine St.", phone: "707-363-4057"},
+        {name: "Robert Craig Winery", coords: [38.30663, -122.282428], address: "625 Imperial Way", phone: "707- 252-2250"},
+        {name: "Vice Versa Wine", coords: [38.336492, -122.323], address: "4225 Solano Ave, Suite 555", phone: "707-968-5620"},
+        {name: "Wonderment Wines", coords: [38.291674, -122.294627], address: "425 Jefferson St", phone: "843-822-8466"},
+        {name: "BX of Napa Wines", coords: [38.396632, -122.20444], address: "Napa, California", phone: "707-927-8750"},
+        {name: "Irwin Family Vineyards", coords: [38.333634, -122.327202], address: "4457 Stillson Street", phone: "707-287-2053"},
+        {name: "John Anthony Vineyards", coords: [38.297527, -122.289122], address: "1440 First Street", phone: "707-265-7711"},
+        {name: "Kenzo Estate", coords: [38.3402, -122.20109], address: "3200 Monticello Road", phone: "707-254-7572"},
+        {name: "Levendi Winery", coords: [38.336492, -122.323], address: "4225 Solano Ave.", phone: "877-538-3634"},
+        {name: "Long Meadow Ranch Winery", coords: [38.464038, -122.457557], address: "775 Whitehall Lane", phone: "707-963-4555"},
+        {name: "Poe Wines", coords: [38.346774, -122.262794], address: "292 Kaanapali Dr,", phone: "707-302-9636"},
+        {name: "Black Cordon Vineyards", coords: [38.34792, -122.35867], address: "4155 Dry Creek Road", phone: "707-226-6860"},
+        {name: "Four Bears / Sean Minor Wines", coords: [38.323315, -122.30196], address: "1370 Trancas Street, # 327", phone: "707-226-1414"},
+        {name: "Frazier Winery", coords: [38.301004, -122.351783], address: "Napa, California 94558", phone: "707-255-3444"},
+        {name: "Peter Franus Wine Co.", coords: [38.35394, -122.33499], address: "5055 Solano Avenue", phone: "707-945-0542"},
+        {name: "Punch Vineyards", coords: [38.293909, -122.296735], address: "574 Montgomery Street", phone: "707-477-1403"},
+        {name: "Spellbound Wines", coords: [38.75476, -83.02612], address: "1436 2nd Street, Suite 288", phone: "707-256-2700"},
+        {name: "Waugh Cellars", coords: [38.402253, -122.301956], address: "2275 Soda Canyon Road", phone: "707-227-2242"},
+        {name: "Brand Napa Valley", coords: [38.47083, -122.35791], address: "90 Long Ranch Road", phone: "707-963-1199"},
+        {name: "Eleven Eleven Winery", coords: [38.325989, -122.287757], address: "620 Trancas St.", phone: "707-224-2211"},
+        {name: "Fulcrum Wines", coords: [38.229058, -122.255771], address: "110 Camino Oruga", phone: "732-610-9602"},
+        {name: "FUSE Wines", coords: [38.3708, -122.296164], address: "4500 Silverado Trl", phone: "707-265-6492"},
+        {name: "Judd's Hill Winery", coords: [38.337533, -122.279755], address: "2332 Silverado Trail", phone: "707-255-2332"},
+        {name: "Melanson Vineyard", coords: [38.474532, -122.344288], address: "1537 Sage Canyon Rd.", phone: "707-963-7404"},
+        {name: "Monticello Vineyards – Corley Family Napa Valley", coords: [38.361597, -122.306116], address: "4242 Big Ranch Road", phone: "707-253-2802"},
+        {name: "Napa Smith Brewpub & Wine TR", coords: [38.224514, -122.256802], address: "1 Executive Way", phone: "707-255-2912"},
+        {name: "Road 31 Wine Company", coords: [38.301004, -122.351783], address: "Napa, California 94558", phone: "707-649-1200"},
+        {name: "Tetra Winery", coords: [38.292087, -122.300473], address: "459 Walnut Street", phone: "707-492-3531"},
+        {name: "The Caves at Soda Canyon", coords: [38.402253, -122.301956], address: "2275 Soda Canyon Road", phone: "707-861-8100"},
+        {name: "Valley Legend", coords: [38.334147, -122.324679], address: "4239 Maher St", phone: ""},
+        {name: "Holman Cellars", coords: [38.22795, -122.253604], address: "190 Camino Oruga #9", phone: "707-287-7557"},
+        {name: "Mark Herold Reserve Room", coords: [38.297369, -122.288054], address: "926 Franklin St", phone: "707-256-3111"},
+        {name: "Mendelson Wines", coords: [38.29712, -122.286119], address: "809 Coombs St.", phone: "707-255-7825"},
+        {name: "Porter Family Vineyards", coords: [38.28327, -122.22564], address: "1189 Green Valley Rd", phone: "707-927-0765"},
+        {name: "Trinitas Cellars", coords: [38.245885, -122.27372], address: "875 Bordeaux Way", phone: "888-983-8414"},
+        {name: "Virage Napa Valley", coords: [38.363738, -122.339142], address: "5225 Solano Ave", phone: "707-963-2588"},
+        {name: "X Winery & Amicus Cellars", coords: [38.228999, -122.254931], address: "122 Camino Oruga", phone: "707-204-9522"},
+        {name: "Alyris Vineyards", coords: [38.34781, -122.22603], address: "2840 Monticello Rd.", phone: "807-472-8135"},
+        {name: "Broman Cellars", coords: [38.54977, -122.46912], address: "945 Deer Park Rd.", phone: "707-963-5451"},
+        {name: "Darms Lane Wine", coords: [38.36352, -122.34955], address: "1150 Darms Lane", phone: "707-224-4200"},
+        {name: "Madorom", coords: [38.339995, -122.279902], address: "2340 Silverado Trail", phone: "707-265-8332"},
+        {name: "Maze Wines", coords: [38.396632, -122.20444], address: "Napa, California", phone: "707-260-4698"},
+        {name: "Monticelli Brothers", coords: [38.396632, -122.20444], address: "Napa, California", phone: "707-255-9100"},
+        {name: "Robert Biale Vineyards", coords: [38.350659, -122.300993], address: "4038 Big Ranch Rd.", phone: "707-257-7555"},
+        {name: "Rocca Family Vineyards", coords: [38.238264, -122.269357], address: "129 Devlin Road", phone: "707-257-8467"},
+        {name: "Sonria / Emerson Wines", coords: [38.29634, -122.2969], address: "2130 3rd Street", phone: "707-324-9849"},
+        {name: "Ashes & Diamonds", coords: [38.34542, -122.32424], address: "4130 Howard Lane", phone: "707-666-4777"},
+        {name: "Gemella", coords: [38.402253, -122.301956], address: "2275 Soda Canyon Road", phone: "707-261-9855"},
+        {name: "Longfellow Wines", coords: [38.259791, -122.271996], address: "910 Enterprise Way", phone: "888-533-5569"},
+        {name: "pureCru Wines", coords: [38.297247, -122.288934], address: "1463 First Street", phone: "707-603-2943"},
+        {name: "Amizetta Vineyards", coords: [38.522629, -122.381571], address: "1099 Greenfield Rd.", phone: "707-963-1460"},
+        {name: "Avinodos", coords: [38.258703, -122.271753], address: "902 Enterprise Way, Suite P", phone: "707-225-2350"},
+        {name: "Grassi Wine Company", coords: [38.299965, -122.288425], address: "1213 Coombs St.", phone: "707-255-3232"},
+        {name: "J. Moss Wines", coords: [38.25863, -122.27342], address: "901 Enterprise Way, Suite B", phone: "707-642-3288"},
+        {name: "Bright Angel Wines", coords: [38.260395, -122.274163], address: "45 Enterprise Ct", phone: "312-510-6211"},
+        {name: "Hugo Family Cellars", coords: [38.396632, -122.20444], address: "Napa, California", phone: "707-492-3448"},
+        {name: "Husic Vineyards", coords: [38.39669, -122.30508], address: "189 Ridge Drive", phone: "707-812-4909"},
+        {name: "PharaohMoans", coords: [38.229768, -122.25689], address: "135 Camino Dorado, Suite 10", phone: "707-251-8070"},
+        {name: "Vintner's Collective", coords: [38.301103, -122.287253], address: "1245 Main St", phone: "707-255-7150"},
+        {name: "Burgess Cellars Tasting Room", coords: [38.5569, -122.47512], address: "1108 Deer Park Rd.", phone: "707-963-4766"},
+        {name: "Barbour Vineyards", coords: [38.23017, -122.25525], address: "104 Camino Dorado", phone: "707-257-1829"},
+        {name: "Edge Wines", coords: [38.3708, -122.296164], address: "4500 Silverado Trl, Ste 1", phone: "707-258-9766"},
+        {name: "Kuleto Estate Family Vineyards", coords: [38.499073, -122.32527], address: "2470 Sage Canyon Rd", phone: "707-708-7651"},
+        {name: "Lloyd Cellars", coords: [38.51113, -122.39083], address: "647 Greenfield Rd", phone: "707-257-2797"},
+        {name: "Ankh Wines", coords: [38.75476, -83.02612], address: "1436 2nd Street, #174", phone: ""},
+        {name: "Brown Estate – Downtown Napa", coords: [38.29854, -122.287142], address: "1005 Coombs Street", phone: "707-963-2435"},
+        {name: "Ricardus Corculum", coords: [38.396632, -122.20444], address: "Napa, California", phone: ""},
+        {name: "Mahoney Vineyards", coords: [38.30101, -122.282222], address: "708 First Street", phone: "707-253-9463"}
+    ];
+
+    wineries.forEach(function(winery) {
+        L.circleMarker(winery.coords, {
+            radius: 6,
+            color: "#8B0000",
+            fillColor: "#C41E3A",
+            fillOpacity: 0.7
+        })
+        .addTo(map)
+        .bindPopup("<div style='font-family: Arial, sans-serif; font-size: 13px; min-width: 200px;'><h4 style='margin: 0 0 8px 0; color: #8B0000; border-bottom: 1px solid #ccc; padding-bottom: 4px;'>" + winery.name + "</h4><b>📍 Address:</b><br>" + winery.address + "<br><br><b>📞 Phone:</b> " + winery.phone + "</div>");
+    });
+
+</script>
+
+</body>
+</html>

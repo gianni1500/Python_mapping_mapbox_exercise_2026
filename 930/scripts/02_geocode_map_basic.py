@@ -51,13 +51,13 @@ import time             # For adding a small pause between API calls (be polite!
 # EXAMPLE (yours will be different):
 #   MAPBOX_TOKEN = "pk.eyJ1IjoieW91cnVzZXJuYW1lIiwiYSI6ImNsZXhhbXBsZSJ9.abc123"
 
-MAPBOX_TOKEN = "PASTE_YOUR_MAPBOX_TOKEN_HERE"
+MAPBOX_TOKEN = "pk.eyJ1IjoiZ2lhbm5pODAwIiwiYSI6ImNtbHRvZGloZDAyZXAzZG9yeDU4NWhuZHYifQ.zgTV_NQ7QPVeommiLkqGaw"
 
 # Quick check — remind the student if they forgot to set the token
-if MAPBOX_TOKEN == "PASTE_YOUR_MAPBOX_TOKEN_HERE":
+if MAPBOX_TOKEN == "pk.eyJ1IjoieW91cnVzZXJuYW1lIiwiYSI6ImNsZXhhbXBsZSJ9.abc123":
     print("ERROR: You need to add your Mapbox access token!")
     print("  Open this script, find the MAPBOX_TOKEN line near the top,")
-    print("  and replace PASTE_YOUR_MAPBOX_TOKEN_HERE with your real token.")
+    print("  and replace the placeholder token with your real token.")     
     print("  Your token starts with 'pk.' and can be found at:")
     print("  https://account.mapbox.com/access-tokens/")
     exit()
@@ -170,7 +170,20 @@ for i, row in df.iterrows():
 
     # Build the full address string for geocoding.
     # We combine the address fields for the best possible result.
-    address = row.get("Full_Address", "")
+    # Start with the Full_Address, then add City and State if available
+    address_parts = []
+    if row.get("Full_Address"):
+        address_parts.append(str(row.get("Full_Address")))
+    if row.get("City") and pd.notna(row.get("City")):
+        address_parts.append(str(row.get("City")))
+    if row.get("State") and pd.notna(row.get("State")):
+        address_parts.append(str(row.get("State")))
+    # If no city/state, default to Napa, California since these are Napa Valley wineries
+    if (not row.get("City") or pd.isna(row.get("City"))) and (not row.get("State") or pd.isna(row.get("State"))):
+        address_parts.append("Napa")
+        address_parts.append("California")
+    
+    address = ", ".join(address_parts)
 
     # Show progress so students can see the script is working
     name = row.get("Name", f"Row {i}")

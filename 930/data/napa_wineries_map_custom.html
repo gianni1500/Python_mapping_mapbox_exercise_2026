@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Custom Mapbox Style Preview</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+<style>
+html, body { height: 100%; margin: 0; }
+#map { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+var map = L.map('map').setView([32.7555, -97.3308], 12);
+
+L.tileLayer('https://api.mapbox.com/styles/v1/gianni800/cmmclvong00cg01ry1haohbaw/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZ2lhbm5pODAwIiwiYSI6ImNtbHRvZGloZDAyZXAzZG9yeDU4NWhuZHYifQ.zgTV_NQ7QPVeommiLkqGaw', {
+    attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    tileSize: 512,
+    zoomOffset: -1,
+    maxZoom: 18
+}).addTo(map);
+
+</script>
+
+</body>
+</html>
